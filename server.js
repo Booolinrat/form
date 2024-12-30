@@ -30,6 +30,16 @@ function generateSessionCode() {
 io.on('connection', (socket) => {
     console.log('a user connected');
 
+    // Check if session code is valid
+    socket.on('check-session', (code, callback) => {
+        // Check if the session exists
+        if (sessions[code]) {
+            callback(true);  // Valid session code
+        } else {
+            callback(false); // Invalid session code
+        }
+    });
+
     // When a teacher or student joins a session
     socket.on('join-session', (code) => {
         if (!sessions[code]) {
@@ -83,6 +93,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle disconnect event
     socket.on('disconnect', () => {
         console.log('a user disconnected');
         // Cleanup when user disconnects (optional)

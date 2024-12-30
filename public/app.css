@@ -7,8 +7,8 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #000;
-  color: #fff;
+  background-color: #f9f9f9;
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,40 +19,155 @@ body {
 .container {
   max-width: 600px;
   width: 100%;
-  padding: 20px;
+  height: 100%;
   text-align: center;
-  background-color: #111;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.header h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
+.header-left h1 {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-right .btn.teacher-btn {
+  background-color: #373b3e;
+  color: #fff;
+  font-size: 1rem;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.header-right .btn.teacher-btn:hover {
+  background-color: #636669;
+}
+
+/* Generate Code Button */
+.generate-code-btn {
+  background-color: #007BFF;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-left: 20px;
+}
+
+.generate-code-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Main Content Section */
 .main-content {
-  margin: 20px 0;
-  height: 300px; /* Set a fixed height for the question area */
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding-right: 15px; /* To avoid scrollbar overlapping content */
+  margin-top: 70px; /* Account for fixed header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(100% - 100px); /* Subtract header and footer heights */
+}
+
+.center-container {
+  text-align: center;
+}
+
+.code-box {
+  width: 100%;
+  max-width: 300px;
+  height: 100px;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.code-box:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+  border-color: #bbb;
+}
+
+.btn.student-btn {
+  background-color: #373b3e;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn.student-btn:hover {
+  background-color: #636669;
+}
+
+/* Footer Section */
+.footer {
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* General Styles for Inputs and Buttons */
+textarea:focus,
+input:focus {
+  outline: none;
+  border: 1px solid #555;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .input-code {
   width: 100%;
   padding: 10px;
   margin: 15px 0;
-  border: 1px solid #555;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #222;
-  color: #fff;
+  background-color: #f1f1f1;
+  color: #333;
   font-size: 1rem;
   text-align: center;
 }
 
 .input-code::placeholder {
-  color: #888;
-  text-align: center;
+  color: #aaa;
 }
 
 .btn {
@@ -73,39 +188,10 @@ body {
 .btn:hover {
   background-color: #555;
   color: #fff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.footer {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-.generated-code h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #0f9;
-  font-weight: bold;
-  text-align: center;
-}
-
-.inputs-container {
-  margin-top: 20px;
-}
-
-textarea.input-code {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #555;
-  border-radius: 5px;
-  background-color: #222;
-  color: #fff;
-  font-size: 1rem;
-  resize: none;
-}
-
-/* Style for the question list */
+/* List Styles */
 ul {
   list-style-type: none;
   padding: 0;
@@ -118,8 +204,8 @@ li {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  word-wrap: break-word; /* Allow text to break and wrap */
-  max-width: 100%; /* Ensure it doesn't expand beyond the container */
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 li:last-child {
@@ -141,69 +227,103 @@ li:last-child {
   background-color: #e60000;
 }
 
-/* Style for question item (li) */
-/* style.css */
-
-/* Ensure the question list container doesn't allow overflow */
+/* Style for question list container */
 #question-list {
   max-width: 100%;
   width: 100%;
-  overflow: auto;  /* Allow scrolling if needed */
-  padding: 0;
-  list-style-type: none;
-}
-
-/* Style for each question item */
-#question-list li {
-  word-break: break-word;   /* Break long words to prevent overflow */
-  overflow-wrap: break-word; /* Break long words to prevent overflow */
-  white-space: normal;      /* Allow text to wrap naturally */
-  max-width: 100%;          /* Ensure the li element doesn't overflow */
-  box-sizing: border-box;   /* Include padding in the width calculation */
-  padding: 10px;
-  margin: 5px 0;
-  border: 1px solid #555;
-  border-radius: 5px;
-  background-color: #222;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left; /* Align text to the left for better readability */
-}
-
-/* Optional: Set the container to handle overflow */
-#question-list {
-  max-width: 100%;
-  width: 100%;
-  overflow: auto;  /* Allows scroll for overflowed items */
+  overflow: auto; /* Allow scrolling if needed */
   padding: 0;
   list-style-type: none;
   word-wrap: break-word;
 }
 
-/* Ensure flexbox doesn't force the text to overflow */
+/* Style for each question item */
 #question-list li {
+  max-width: 100%; /* Ensure the li element doesn't overflow */
+  width: 100%;
+  word-break: break-word; /* Break long words to prevent overflow */
+  overflow-wrap: break-word; /* Ensure proper wrapping for long words */
+  white-space: normal; /* Allow text to wrap naturally */
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+/* Hover effect for the question text */
+#question-list li:hover {
+  text-decoration: line-through; /* Adds a line through the text */
+  background-color: #e0e0e0; /* Optional: Slight background color change for better visibility */
+  color: #999; /* Optional: Change text color for a faded effect */
+  cursor: pointer; /* Indicates the item is interactive */
+}
+
+/* Add max-width for large screens */
+@media (min-width: 768px) {
+  #question-list li {
+    max-width: 80%; /* Limit width of the question box on larger screens */
+    margin: 5px auto; /* Center-align question boxes horizontally */
+  }
+}
+
+.red-question {
+  color: #333; /* Regular text color */
+}
+
+.red-question::after {
+  content: "?"; /* Adds a question mark after the text */
+  color: red; /* Makes the question mark red */
+  font-weight: bold; /* Optional: makes it bolder */
+}
+
+
+/* Header Styles */
+.header {
   display: flex;
-  flex-wrap: wrap;   /* Allow text to wrap inside the flex container */
-  flex-direction: column;  /* Allow content to stack vertically */
-  width: 100%;       /* Prevent stretching */
-  max-width: 100%;   /* Ensure full width usage without overflow */
-  box-sizing: border-box;  /* Make padding and borders part of the width */
+  justify-content: space-between; /* Spread out the items (left and right) */
+  align-items: center; /* Vertically center the items */
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
-
-
-.question-item:hover {
-  text-decoration: line-through;
+/* Align title to the left */
+.header h1 {
+  margin: 0; /* Remove any margin */
+  font-size: 1.5rem;
 }
 
-textarea:focus, input:focus {
-  outline: none; /* Removes the default outline */
-  border: 1px solid #555; /* Keeps the border color consistent */
+/* Style for the "Generate Code" button */
+.generate-code-btn {
+  font-size: 0.8rem; /* Smaller font size */
+  padding: 8px 15px; /* Smaller padding */
+  width: 150px; /* Fixed width for the button */
+  background-color: #373b3e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-/* Optional: Add a more subtle focus effect if needed */
-textarea:focus, input:focus {
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Adds a light glow effect to the focused element */
+.generate-code-btn:hover {
+  background-color: #636669;
+}
+
+/* Style for session code, aligned to the right */
+#session-code {
+  font-size: 1rem;
+  color: #333;
+  margin-left: 20px; /* Space between button and session code */
+  text-align: right; /* Align the session code to the right */
 }

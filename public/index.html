@@ -1,34 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question Forum</title>
-  <link rel="stylesheet" href="app.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Any Questions?</title>
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <div class="container">
-    <header class="header">
-      <h1>Welcome to the Question Forum</h1>
-    </header>
-    <main class="main-content">
-      <div class="button-container">
-        <a href="teacher.html">
-            <button class="btn generate-btn">Teacher?</button>
-        </a>
+    <div class="container">
+        <header class="header">
+            <h1><span class="red-question">Any Questions</span></h1>
+            <!-- Generate Code Button -->
+            <a href="teacher.html">
+                <button id="generate-code-btn" class="btn generate-code-btn">Generate Code</button>
+            </a>
+        </header>
 
-        <a href="student.html">
-            <button class="btn enter-btn">Student?</button>
-        </a>
-        
+        <main class="main-content">
+            <section id="join-section">
+                <h2>Enter Session Code</h2>
+                <input type="text" id="session-code-input" class="input-code" placeholder="Enter session code" />
+                <button id="join-session-btn" class="btn">Join Session</button>
+            </section>
 
-          
-          
-      </div>
-    </main>
-    <footer class="footer">
-      <p>&copy; 2024 Kuzmic & Wade</p>
-    </footer>
-  </div>
+            <section id="question-section" style="display: none;">
+                <h2>Submit Your Question</h2>
+                <form id="question-form">
+                    <textarea id="question-input" class="input-code" placeholder="Type your question here"></textarea>
+                    <button type="button" id="submit-question-btn" class="btn">Submit Question</button>
+                </form>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 Kuzmic & Wade </p>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // Initialize the socket connection
+        const sessionCodeInput = document.getElementById('session-code-input');
+        const joinSessionBtn = document.getElementById('join-session-btn');
+        const joinSection = document.getElementById('join-section');
+        const questionForm = document.getElementById('question-section');
+        const submitQuestionBtn = document.getElementById('submit-question-btn');
+        const questionInput = document.getElementById('question-input');
+        const generateCodeBtn = document.getElementById('generate-code-btn'); // Reference to the "Generate Code" button
+
+        let currentSessionCode = null;
+
+        // Join the session when the student enters the code
+        function joinSession() {
+            const code = sessionCodeInput.value.trim();
+            if (code) {
+                // Emit an event to check if the session code exists
+                socket.emit('check-session', code, (isValid) => {
+                    if (isValid) {
+                        // If the session code is valid, join the session
+                        socket.emit('join-session', code);
+                        currentSessionCode = code; // Store the session code
+
+                        // Hide the code input and button, show the question form
+                        joinSection.style.display = 'none';
+                        questionForm.style.display = 'block';
+
+                        // Hide the "Generate Code" button immediately after joining the session
+                        generateCodeBtn.parentElement.style.display = 'none';
+                    } else {
+                        // If the session code is invalid, show an alert
+                        alert('Invalid session code. Please enter a valid code.');
+                    }
+                });
+            } else {
+                alert('Please enter a valid session code.');
+            }
+        }
+
+        joinSessionBtn.addEventListener('click', joinSession);
+
+        // Submit the question to the server
+        submitQuestionBtn.addEventListener('click', () => {
+            const question = questionInput.value.trim();
+            if (question && currentSessionCode) {
+                socket.emit('submit-question', currentSessionCode, question);
+                questionInput.value = ''; // Clear the input after submission
+            } else {
+                alert('Please enter a question before submitting.');
+            }
+        });
+
+        // Prevent Enter key from inserting space in code input and trigger the join session
+        sessionCodeInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent Enter from adding new line
+                joinSession(); // Trigger the join session logic
+            }
+        });
+
+        // Prevent Enter key from inserting space in question input and submit the question
+        questionInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent Enter from adding new line
+                submitQuestionBtn.click(); // Trigger the submit button click
+            }
+        });
+    </script>
 </body>
 </html>
