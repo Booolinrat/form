@@ -1,0 +1,209 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  background-color: #111;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.main-content {
+  margin: 20px 0;
+  height: 300px; /* Set a fixed height for the question area */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 15px; /* To avoid scrollbar overlapping content */
+}
+
+.input-code {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.input-code::placeholder {
+  color: #888;
+  text-align: center;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: #555;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.generated-code h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #0f9;
+  font-weight: bold;
+  text-align: center;
+}
+
+.inputs-container {
+  margin-top: 20px;
+}
+
+textarea.input-code {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: #fff;
+  font-size: 1rem;
+  resize: none;
+}
+
+/* Style for the question list */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #fff;
+  color: #000;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word; /* Allow text to break and wrap */
+  max-width: 100%; /* Ensure it doesn't expand beyond the container */
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-btn:hover {
+  background-color: #e60000;
+}
+
+/* Style for question item (li) */
+/* style.css */
+
+/* Ensure the question list container doesn't allow overflow */
+#question-list {
+  max-width: 100%;
+  width: 100%;
+  overflow: auto;  /* Allow scrolling if needed */
+  padding: 0;
+  list-style-type: none;
+}
+
+/* Style for each question item */
+#question-list li {
+  word-break: break-word;   /* Break long words to prevent overflow */
+  overflow-wrap: break-word; /* Break long words to prevent overflow */
+  white-space: normal;      /* Allow text to wrap naturally */
+  max-width: 100%;          /* Ensure the li element doesn't overflow */
+  box-sizing: border-box;   /* Include padding in the width calculation */
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left; /* Align text to the left for better readability */
+}
+
+/* Optional: Set the container to handle overflow */
+#question-list {
+  max-width: 100%;
+  width: 100%;
+  overflow: auto;  /* Allows scroll for overflowed items */
+  padding: 0;
+  list-style-type: none;
+  word-wrap: break-word;
+}
+
+/* Ensure flexbox doesn't force the text to overflow */
+#question-list li {
+  display: flex;
+  flex-wrap: wrap;   /* Allow text to wrap inside the flex container */
+  flex-direction: column;  /* Allow content to stack vertically */
+  width: 100%;       /* Prevent stretching */
+  max-width: 100%;   /* Ensure full width usage without overflow */
+  box-sizing: border-box;  /* Make padding and borders part of the width */
+}
+
+
+
+.question-item:hover {
+  text-decoration: line-through;
+}
+
+textarea:focus, input:focus {
+  outline: none; /* Removes the default outline */
+  border: 1px solid #555; /* Keeps the border color consistent */
+}
+
+/* Optional: Add a more subtle focus effect if needed */
+textarea:focus, input:focus {
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Adds a light glow effect to the focused element */
+}

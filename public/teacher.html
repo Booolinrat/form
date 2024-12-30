@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher's Page</title>
+    <link rel="stylesheet" href="app.css"> <!-- External stylesheet link -->
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Teacher's Page</h1>
+            <button id="generate-code" class="btn">Generate Code</button>
+            <p id="session-code"></p>
+        </header>
+
+        <main class="main-content">
+            <h2>Student Questions</h2>
+            <ul id="question-list">
+                <!-- Questions from students will be added here -->
+            </ul>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 Kuzmic & Wade</p>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Generate a new code for the teacher
+        document.getElementById('generate-code').addEventListener('click', () => {
+            fetch('/generate-code', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    const code = data.code;
+                    document.getElementById('session-code').textContent = `Session Code: ${code}`;
+                    socket.emit('join-session', code); // Teacher joins the session automatically
+                    window.history.pushState({}, '', `?code=${code}`);
+                });
+        });
+
+        // Listen for new questions from students
+        socket.on('new-question', (questionData) => {
+            console.log(`New question received: ${questionData.text}`);
+
+            const questionList = document.getElementById('question-list');
+            const questionItem = document.createElement('li');
+            questionItem.classList.add('question-item');
+            questionItem.setAttribute('data-id', questionData.id);  // Store the question ID
+
+            // Set the question text
+            questionItem.textContent = questionData.text;
+
+            // Handle click to delete (on the text)
+            questionItem.onclick = () => {
+                socket.emit('delete-question', getSessionCode(), questionData.id); // Send delete request by ID
+            };
+
+            // Append the question item to the list
+            questionList.appendChild(questionItem);
+        });
+
+        // Listen for question removal from the teacher's page
+        socket.on('remove-question', (questionId) => {
+            const questionList = document.getElementById('question-list');
+            const questionItem = questionList.querySelector(`li[data-id="${questionId}"]`);
+            if (questionItem) {
+                questionItem.remove(); // Remove the question item from the list
+            }
+        });
+
+        // Helper to get the current session code from the URL
+        function getSessionCode() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('code');
+        }
+    </script>
+</body>
+</html>
