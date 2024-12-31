@@ -90,6 +90,11 @@
             }
         });
 
+        // Listen for blacklist warnings from the server
+        socket.on('blacklist-warning', (message) => {
+            alert(message); // Show an alert to the student
+        });
+
         // Prevent Enter key from inserting space in code input and trigger the join session
         sessionCodeInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {

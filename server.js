@@ -4,6 +4,14 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const fs = require('fs');
+const path = require('path');
+
+// Load the blacklist file into an array
+const blacklist = fs.readFileSync(path.join(__dirname, 'blacklist.txt'), 'utf8')
+    .split('\n')
+    .map(word => word.trim().toLowerCase())
+    .filter(word => word); // Remove empty lines
 
 // Store session data
 let sessions = {}; // This will hold the session data, including students
@@ -62,6 +70,16 @@ io.on('connection', (socket) => {
             console.log('Session not found');
             return;
         }
+
+    // Filter inappropriate words
+    const isBlacklisted = blacklist.some(word => 
+        question.toLowerCase().includes(word)
+    );
+
+    if (isBlacklisted) {
+        console.log(`Blocked inappropriate question: ${question}`);
+        return; // Do not broadcast or store the question
+    }
 
         // Generate a unique ID for each question
         const questionId = `question-${Date.now()}`;

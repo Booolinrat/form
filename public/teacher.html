@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teachers: Any Questions?</title>
-    <link rel="stylesheet" href="app.css">
+    <title>Teacher's: Any Questions?</title>
+    <link rel="stylesheet" href="app.css"> <!-- External stylesheet link -->
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1><span class="red-question">Any Questions</span></h1>
-            <button id="generate-code" class="btn generate-code-btn">Generate Code</button>
-            <p id="session-code"></p>
+            <h1 class="header-title"><span class="red-question">Any Questions</span></h1>
+            <div class="header-right">
+                <button id="generate-code" class="btn">Generate Code</button>
+                <p id="session-code"></p>
+            </div>
         </header>
 
         <main class="main-content">
@@ -26,57 +28,77 @@
         </footer>
     </div>
 
+    <!-- Fullscreen session code display -->
+    <div id="fullscreen-code" class="fullscreen-code">
+        <div class="code-box" id="fullscreen-code-box"></div>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-
+        const generateCodeBtn = document.getElementById('generate-code');
+        const sessionCodeDisplay = document.getElementById('session-code');
+        const fullscreenCodeDisplay = document.getElementById('fullscreen-code');
+        const fullscreenCodeBox = document.getElementById('fullscreen-code-box');
+    
+        // Ensure the fullscreen code is hidden on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            fullscreenCodeDisplay.style.display = 'none';
+        });
+    
         // Generate a new code for the teacher
-        document.getElementById('generate-code').addEventListener('click', () => {
+        generateCodeBtn.addEventListener('click', () => {
             fetch('/generate-code', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
                     const code = data.code;
-                    document.getElementById('session-code').textContent = `Session Code: ${code}`;
+                    sessionCodeDisplay.textContent = `Session Code: ${code}`;
                     socket.emit('join-session', code); // Teacher joins the session automatically
                     window.history.pushState({}, '', `?code=${code}`);
+    
+                    // Show the code fullscreen in the white box
+                    fullscreenCodeBox.textContent = code;
+                    fullscreenCodeDisplay.style.display = 'flex';
                 });
         });
-
+    
+        // Hide the fullscreen code when clicked
+        fullscreenCodeDisplay.addEventListener('click', () => {
+            fullscreenCodeDisplay.style.display = 'none'; // Hide fullscreen display
+        });
+    
         // Listen for new questions from students
         socket.on('new-question', (questionData) => {
-            console.log(`New question received: ${questionData.text}`);
-
             const questionList = document.getElementById('question-list');
             const questionItem = document.createElement('li');
             questionItem.classList.add('question-item');
-            questionItem.setAttribute('data-id', questionData.id);  // Store the question ID
-
-            // Set the question text
+            questionItem.setAttribute('data-id', questionData.id); // Store the question ID
+    
             questionItem.textContent = questionData.text;
-
+    
             // Handle click to delete (on the text)
             questionItem.onclick = () => {
                 socket.emit('delete-question', getSessionCode(), questionData.id); // Send delete request by ID
             };
-
-            // Append the question item to the list
+    
             questionList.appendChild(questionItem);
         });
-
+    
         // Listen for question removal from the teacher's page
         socket.on('remove-question', (questionId) => {
             const questionList = document.getElementById('question-list');
             const questionItem = questionList.querySelector(`li[data-id="${questionId}"]`);
             if (questionItem) {
-                questionItem.remove(); // Remove the question item from the list
+                questionItem.remove();
             }
         });
-
+    
         // Helper to get the current session code from the URL
         function getSessionCode() {
             const params = new URLSearchParams(window.location.search);
             return params.get('code');
         }
     </script>
+    
 </body>
 </html>
